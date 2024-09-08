@@ -29,10 +29,8 @@ function technic.chests.change_allowed(pos, player, owned, protected)
 		if minetest.is_player(player) and not default.can_interact_with_node(player, pos) then
 			return false
 		end
-	elseif protected then
-		if minetest.is_protected(pos, player:get_player_name()) then
-			return false
-		end
+	elseif protected and minetest.is_protected(pos, player) then
+		return default.can_interact_with_node(player, pos)
 	end
 	return true
 end
