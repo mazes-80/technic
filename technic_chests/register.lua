@@ -222,7 +222,9 @@ function technic.chests.register_chest(nodename, data)
 			-- Copied from default chests.lua
 			local meta = minetest.get_meta(pos)
 			local player_name = player:get_player_name()
-			if minetest.is_protected(pos, player_name) and meta:get_string("owner") ~= player_name then
+			if meta:get_string("owner") ~= player_name and
+				( not technic.chests.members_share_protected_keys
+				or minetest.is_protected(pos, player_name) ) then
 				minetest.chat_send_player(player_name, "You do not own this chest.")
 				minetest.record_protection_violation(pos, player_name)
 				return nil

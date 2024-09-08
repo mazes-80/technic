@@ -35,6 +35,8 @@ function technic.chests.change_allowed(pos, player, owned, protected)
 	return true
 end
 
+technic.chests.members_share_protected_keys = minetest.settings:get_bool("technic_chests_members_share_protected_keys", false)
+
 if minetest.get_modpath("digilines") then
 	dofile(modpath.."/digilines.lua")
 end
