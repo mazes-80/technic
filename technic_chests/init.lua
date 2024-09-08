@@ -30,6 +30,16 @@ function technic.chests.change_allowed(pos, player, owned, protected)
 			return false
 		end
 	elseif protected then
+		local meta = minetest.get_meta(pos)
+		local secret = meta:get_string("key_lock_secret")
+		if secret ~= "" then
+			local wielded_item = player:get_wielded_item()
+			if minetest.get_item_group(wielded_item:get_name(), "key") == 1 then
+				if wielded_item:get_meta():get_string("secret") == secret then
+					return true
+				end
+			end
+		end
 		if minetest.is_protected(pos, player:get_player_name()) then
 			return false
 		end
