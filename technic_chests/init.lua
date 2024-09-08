@@ -34,6 +34,13 @@ function technic.chests.change_allowed(pos, player, owned, protected)
 		local secret = meta:get_string("key_lock_secret")
 		if secret ~= "" then
 			local wielded_item = player:get_wielded_item()
+			-- can't use select_key because field owner not supplied
+			-- if field owner existed all test would be replaced by: not default.can_interact_with_node(player, node)
+			--if minetest.get_modpath("keyring") and
+			--	minetest.get_item_group(wielded_item:get_name(), "key_container") == 1 then
+			--		keyring.craft_common.select_key(wielded_item, player, meta)
+			--	end
+			--elseif minetest.get_item_group(wielded_item:get_name(), "key") == 1 then
 			if minetest.get_item_group(wielded_item:get_name(), "key") == 1 then
 				if wielded_item:get_meta():get_string("secret") == secret then
 					return true
