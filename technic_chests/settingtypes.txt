@@ -1,0 +1,2 @@
+# Allow area members to share keys for protected chests
+technic_chests_members_share_protected_keys (Area members can share protected chests keys) bool false
