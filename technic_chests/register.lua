@@ -217,6 +217,24 @@ function technic.chests.register_chest(nodename, data)
 			return secret, "a locked chest", owner
 		end
 	end
+	if data.protected then
+		def.on_skeleton_key_use = function(pos, player, newsecret)
+			-- Copied from default chests.lua
+			local meta = minetest.get_meta(pos)
+			local player_name = player:get_player_name()
+			if minetest.is_protected(pos, player_name) then
+				minetest.chat_send_player(player_name, "You do not own this chest.")
+				minetest.record_protection_violation(pos, player_name)
+				return nil
+			end
+			local secret = meta:get_string("key_lock_secret")
+			if secret == "" then
+				secret = newsecret
+				meta:set_string("key_lock_secret", secret)
+			end
+			return secret, "a locked chest", owner
+		end
+	end
 	if data.digilines then
 		def.digiline = {
 			receptor = {},
