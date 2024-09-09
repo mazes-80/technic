@@ -219,12 +219,17 @@ function technic.chests.register_chest(nodename, data)
 	end
 	if data.protected then
 		def.on_skeleton_key_use = function(pos, player, newsecret)
-			-- Copied from default chests.lua
 			local meta = minetest.get_meta(pos)
 			local player_name = player:get_player_name()
 			local owner = meta:get_string("owner")
 
-			if meta:get_string("owner") ~= player_name and
+			-- Retro-compat: take ownership for chests
+			if owner == "" and not minetest.is_protected(pos, player_name) then
+				meta:set_string("owner", player_name)
+				owner = player_name
+			end
+
+			if owner ~= player_name and
 				( not technic.chests.members_share_protected_keys
 				or minetest.is_protected(pos, player_name) ) then
 				minetest.chat_send_player(player_name, "You do not own this chest.")
